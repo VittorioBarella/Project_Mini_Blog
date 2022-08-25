@@ -1,15 +1,16 @@
 import { NavLink } from "react-router-dom";
 import { useAuthValue } from "../../context/AuthContext";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
-
     const { user } = useAuthValue();
+    const { logout } = useAuthentication();
 
     return (
         <nav className={styles.navbar}>
             <NavLink to="/" className={styles.brand}>
-                Vittório's Mini <span>Blog</span>
+                Mini <span>Blog</span>
             </NavLink>
             <ul className={styles.links_list}>
                 <li>
@@ -68,6 +69,11 @@ const Navbar = () => {
                         About
                     </NavLink>
                 </li>
+                {user && (
+                    <li>
+                        <button onClick={logout}>Log out</button>
+                    </li>
+                )}
             </ul>
         </nav>
     );

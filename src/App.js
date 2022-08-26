@@ -4,7 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import { useAuthentication } from "./hooks/useAuthentication";
 import About from "./pages/About/About";
 import CreatePost from "./pages/CreatePost/CreatePost";
@@ -61,7 +61,6 @@ function App() {
           <Footer />
         </BrowserRouter>
       </AuthProvider>
-
     </div>
   );
 };

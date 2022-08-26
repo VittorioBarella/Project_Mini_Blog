@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import { useState } from "react";
 import styles from "./Register.module.css";
+
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 const Register = () => {
     const [displayName, setDisplayName] = useState("");
@@ -19,11 +20,11 @@ const Register = () => {
         const user = {
             displayName,
             email,
-            password
+            password,
         };
 
         if (password !== confirmPassword) {
-            setError("Passwords must match!");
+            setError("Passwords must be the same.");
             return;
         }
 
@@ -31,13 +32,6 @@ const Register = () => {
 
         console.log(res);
     };
-
-    useEffect(() => {
-        if (authError) {
-            setError(authError);
-        }
-    }, [authError]);
-
 
     return (
         <div className={styles.register}>
@@ -51,10 +45,9 @@ const Register = () => {
                         name="displayName"
                         required
                         placeholder="User name"
-                        value={displayName}
                         onChange={(e) => setDisplayName(e.target.value)}
+                        value={displayName}
                     />
-
                 </label>
                 <label>
                     <span>Email:</span>
@@ -63,10 +56,9 @@ const Register = () => {
                         name="email"
                         required
                         placeholder="User email"
-                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        value={email}
                     />
-
                 </label>
                 <label>
                     <span>Password:</span>
@@ -74,26 +66,23 @@ const Register = () => {
                         type="password"
                         name="password"
                         required
-                        placeholder="Enter your password"
-                        value={password}
+                        placeholder="Enter password"
                         onChange={(e) => setPassword(e.target.value)}
+                        value={password}
                     />
                 </label>
                 <label>
-                    <span>Confirm your password:</span>
+                    <span>Confirm your Password:</span>
                     <input
                         type="password"
                         name="confirmPassword"
                         required
                         placeholder="Confirm your password"
-                        value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        value={confirmPassword}
                     />
                 </label>
-                {!loading && <button className="btn">Register</button>}
-                {loading && (
-                    <button className="btn" disabled>Wait ...</button>
-                )}
+                <button className="btn"> Log in or Register</button>
                 {error && <p className="error">{error}</p>}
             </form>
         </div>

@@ -28,8 +28,9 @@ const Register = () => {
             return;
         }
 
-        console.log(user);
+        const res = await createUser(user);
 
+        console.log(res);
     };
 
     return (

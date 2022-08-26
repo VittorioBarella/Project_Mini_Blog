@@ -1,4 +1,3 @@
-import { db } from "../firebase/config";
 import {
     createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile
 } from "firebase/auth";

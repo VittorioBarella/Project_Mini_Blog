@@ -1,34 +1,44 @@
-import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
+
+import { onAuthStateChanged } from "firebase/auth";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
+// hooks
+import { useEffect, useState } from "react";
+import { useAuthentication } from "./hooks/useAuthentication";
+
+// pages
+import About from "./pages/About/About";
+import Home from "./pages/Home/Home";
+import Post from "./pages/Post/Post";
+
+// components
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
-import { AuthProvider } from "./context/AuthContext";
-import { useAuthentication } from "./hooks/useAuthentication";
-import About from "./pages/About/About";
 import CreatePost from "./pages/CreatePost/CreatePost";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import Home from "./pages/Home/Home";
+import EditPost from "./pages/EditPost/EditPost";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import Search from "./pages/Search/Search";
+
+// context
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-
   const [user, setUser] = useState(undefined);
   const { auth } = useAuthentication();
 
   const loadingUser = user === undefined;
 
   useEffect(() => {
-
     onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
   }, [auth]);
 
   if (loadingUser) {
-    return <p>Loading...</p>;
+    return <p>Carregando...</p>;
   }
 
   return (
@@ -36,10 +46,20 @@ function App() {
       <AuthProvider value={{ user }}>
         <BrowserRouter>
           <Navbar />
-          <div className='container'>
+          <div className="container">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route
+                path="/posts/create"
+                element={user ? <CreatePost /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/posts/edit/:id"
+                element={user ? <EditPost /> : <Navigate to="/login" />}
+              />
+              <Route path="/posts/:id" element={<Post />} />
+              <Route path="/search" element={<Search />} />
               <Route
                 path="/login"
                 element={!user ? <Login /> : <Navigate to="/" />}
@@ -47,10 +67,6 @@ function App() {
               <Route
                 path="/register"
                 element={!user ? <Register /> : <Navigate to="/" />}
-              />
-              <Route
-                path="/posts/create"
-                element={user ? <CreatePost /> : <Navigate to="/login" />}
               />
               <Route
                 path="/dashboard"
@@ -63,6 +79,6 @@ function App() {
       </AuthProvider>
     </div>
   );
-};
+}
 
 export default App;

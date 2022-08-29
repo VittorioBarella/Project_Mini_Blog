@@ -1,5 +1,5 @@
 // CSS
-import styles from "./Home.module.css";
+import styles from "./Search.module.css";
 
 // hooks
 import { Link, useNavigate } from "react-router-dom";
@@ -34,7 +34,7 @@ const Home = () => {
             <form className={styles.search_form} onSubmit={handleSubmit}>
                 <input
                     type="text"
-                    placeholder="Ou busque por tags..."
+                    placeholder="Or search by tags..."
                     onChange={(e) => setQuery(e.target.value)}
                 />
                 <button className="btn btn-dark">Search</button>

@@ -66,7 +66,7 @@ const CreatePost = () => {
     return (
         <div className={styles.create_post}>
             <h2>Create post</h2>
-            <p>Write about whatever you want and share your stuff!</p>
+            <p>Write about whatever you want and share your memories!</p>
             <form onSubmit={handleSubmit}>
                 <label>
                     <span>Title:</span>
@@ -80,12 +80,12 @@ const CreatePost = () => {
                     />
                 </label>
                 <label>
-                    <span>Image URL:</span>
+                    <span>Image Url:</span>
                     <input
                         type="text"
                         name="image"
                         required
-                        placeholder="Insert an image that represents your post."
+                        placeholder="Insert an image that represents your post"
                         onChange={(e) => setImage(e.target.value)}
                         value={image}
                     />
@@ -106,7 +106,7 @@ const CreatePost = () => {
                         type="text"
                         name="tags"
                         required
-                        placeholder="Enter tags separated by comma."
+                        placeholder="Enter tags separated by comma"
                         onChange={(e) => setTags(e.target.value)}
                         value={tags}
                     />

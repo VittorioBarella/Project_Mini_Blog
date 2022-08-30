@@ -1,61 +1,33 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 
-export const useFetchDocument = (docCollection, search = null, uid = null) => {
-
-    const [documents, setDcouments] = useState(null);
+export const useFetchDocument = (docCollection, id) => {
+    const [document, setDocument] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
 
-    // deal with memory leak
-    const [cancelled, setCancelled] = useState(false);
-
     useEffect(() => {
-
-        async function loadData() {
-            if (cancelled) return;
-
+        const loadDocument = async () => {
             setLoading(true);
 
-            const collectionRef = await collection(db, docCollection);
-
             try {
+                const docRef = await doc(db, docCollection, id);
+                const docSnap = await getDoc(docRef);
 
-                let q;
-
-                // search
-                // dashboard
-
-                q = await query(collectionRef, orderBy("createAt", "desc"));
-
-                await onSnapshot(q, (QuerySnapshot) => {
-                    setDcouments(
-                        QuerySnapshot.docs.map((doc) => ({
-                            id: doc.id,
-                            ...doc.data(),
-                        }))
-                    );
-                });
-
-                setLoading(false);
-
+                setDocument(docSnap.data());
             } catch (error) {
                 console.log(error);
                 setError(error.message);
-
-                setLoading(false);
             }
-        }
 
-        loadData();
-    }, [docCollection, search, uid, cancelled]);
+            setLoading(false);
+        };
 
+        loadDocument();
+    }, [docCollection, id]);
 
-    useEffect(() => {
-        return () => setCancelled(true);
-    }, []);
+    console.log(document);
 
-
-    return { documents, loading, error };
+    return { document, loading, error };
 };

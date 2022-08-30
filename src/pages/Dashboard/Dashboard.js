@@ -1,14 +1,15 @@
-import styles from "./Dashboard.module.css";
 import { Link } from "react-router-dom";
 import { useAuthValue } from "../../context/AuthContext";
 import { useFetchDocuments } from "../../hooks/useFetchDocuments";
+import styles from "./Dashboard.module.css";
 
 
 const Dashboard = () => {
     const { user } = useAuthValue();
     const uid = user.id;
 
-    const posts = [];
+    const { documents: posts, loading } = useFetchDocuments("posts", null, uid);
+
 
     return (
         <div>
@@ -24,6 +25,8 @@ const Dashboard = () => {
                     <p>has posts</p>
                 </div>
             )}
+            {posts && posts.map((post) => <h3>{post.title}</h3>)}
+
         </div>
     );
 };

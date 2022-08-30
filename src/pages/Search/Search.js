@@ -1,53 +1,30 @@
-// CSS
 import styles from "./Search.module.css";
 
 // hooks
-import { Link, useNavigate } from "react-router-dom";
 import { useFetchDocuments } from "../../hooks/useFetchDocuments";
-
-// react
-import { useState } from "react";
+import { useQuery } from "../../hooks/useQuery";
 
 // components
+import { Link } from "react-router-dom";
 import PostDetail from "../../components/PostDetail/PostDetail";
 
-const Home = () => {
-    const { documents: posts, loading } = useFetchDocuments("posts");
+const Search = () => {
+    const query = useQuery();
+    const search = query.get("q");
 
-    const navigate = useNavigate();
-
-    const [query, setQuery] = useState("");
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        if (query) {
-            return navigate(`/search?q=${query}`);
-        }
-    };
-
-    console.log(loading);
+    const { documents: posts } = useFetchDocuments("posts", search);
 
     return (
-        <div className={styles.home}>
-            <h1>See our latest posts</h1>
-            <form className={styles.search_form} onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Or search by tags..."
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-                <button className="btn btn-dark">Search</button>
-            </form>
+        <div className={styles.search_container}>
+            <h1>Results found for: {search}</h1>
             <div className="post-list">
-                {loading && <p>Loading...</p>}
                 {posts && posts.length === 0 && (
-                    <div className={styles.noposts}>
-                        <p>No posts found</p>
-                        <Link to="/posts/create" className="btn">
-                            Create first post
+                    <>
+                        <p>No posts were found from your search...</p>
+                        <Link to="/" className="btn btn-dark">
+                            Back
                         </Link>
-                    </div>
+                    </>
                 )}
                 {posts && posts.map((post) => <PostDetail key={post.id} post={post} />)}
             </div>
@@ -55,4 +32,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Search;
